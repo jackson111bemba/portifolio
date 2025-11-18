@@ -1070,7 +1070,7 @@ async function uploadLargeImage(file) {
     <div class="admin-section">
       <h3>Profile Picture</h3>
       <div class="profile-pic-container" style="width: 150px; height: 150px; margin: 0 auto 1.5rem; border-radius: 20px; overflow: hidden; border: 3px solid var(--accent);">
-        <img id="adminProfilePreview" class="profile-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%237e3af2'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='sans-serif' font-size='60' fill='white'%3EJ%3C/text%3E%3C/svg%3E" alt="Preview">
+        <img id="adminProfilePreview" class="profile-pic" src="00.png.png" alt="Preview">
       </div>
       <input type="file" id="adminProfilePicInput" accept="image/*" class="file-input">
       <button id="saveProfileBtn">Upload & Save Profile Picture</button>
@@ -1166,7 +1166,7 @@ async function uploadLargeImage(file) {
     const PASSWORD = 'deux123bemba';
     // Default data
     const DEFAULT_DATA = {
-      profilePic: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"%3E%3Crect width="150" height="150" fill="%237e3af2"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="60" fill="white"%3EJ%3C/text%3E%3C/svg%3E',
+      profilePic: '00.png.png',
       email: 'iyamuremyejackson10@gmail.com',
       phone: '+250 794 924 396',
       location: 'Kigali, Rwanda',
@@ -1229,65 +1229,42 @@ async function uploadLargeImage(file) {
         progressBar.style.width = `${Math.min(progress, 100)}%`;
       }, 200);
     }
-    // Convert data to compact format (simulating cloud storage)
+    // Save to cloud (simulated)
     function saveToCloud() {
-      // In a real implementation, this would be:
-      // fetch('/api/save-portfolio', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(appData)
-      // })
-      // For this demo, we'll simulate cloud saving
       setTimeout(() => {
         showToast('Changes saved to cloud storage! ✓');
-        // Update storage meter
         const used = Math.min(45 + Math.random() * 10, 95);
         document.getElementById('storageUsed').style.width = `${used}%`;
-        // Render updated content
         renderAll();
       }, 500);
     }
-    // Simulate loading from cloud
+    // Load from cloud (simulated)
     function loadFromCloud() {
-      // In a real implementation, this would fetch from your API
-      // fetch('/api/get-portfolio')
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     appData = data;
-      //     renderAll();
-      //   });
-      // For this demo, we'll use the default data
       appData = {...DEFAULT_DATA};
       renderAll();
       showToast('Portfolio loaded from cloud! ✓', 'success');
     }
     // Function to render all content
     function renderAll() {
-      // Update profile pictures
       document.getElementById('headerProfilePic').src = appData.profilePic;
       document.getElementById('adminProfilePreview').src = appData.profilePic;
-      // Update contact information
       const contactCards = document.querySelectorAll('.contact-card');
       if (contactCards.length >= 3) {
-        // Email
         const emailLink = contactCards[0].querySelector('a');
         if (emailLink) {
           emailLink.textContent = appData.email;
           emailLink.href = `mailto:${appData.email}`;
         }
-        // Phone
         const phoneLink = contactCards[1].querySelector('a');
         if (phoneLink) {
           phoneLink.textContent = appData.phone;
           phoneLink.href = `tel:${appData.phone.replace(/\s+/g, '')}`;
         }
-        // Location
         const locationText = contactCards[2].querySelector('p');
         if (locationText) {
           locationText.textContent = appData.location;
         }
       }
-      // Render skills
       const skillsGrid = document.getElementById('skillsGrid');
       skillsGrid.innerHTML = '';
       appData.skills.forEach(s => {
@@ -1300,12 +1277,9 @@ async function uploadLargeImage(file) {
         `;
         skillsGrid.appendChild(el);
       });
-      // Render projects
       const projList = document.getElementById('projectsList');
       projList.innerHTML = '';
-      // Filter out system projects for main display (only show user-added projects)
       const userProjects = appData.projects.filter(p => !p.isSystem);
-      // If no user projects, show system projects as examples
       const displayProjects = userProjects.length > 0 ? userProjects : appData.projects;
       displayProjects.forEach(p => {
         const hasImg = p.imageUrl && !p.imageUrl.includes('text=No+Image');
@@ -1326,7 +1300,6 @@ async function uploadLargeImage(file) {
         projList.appendChild(el);
       });
     }
-    // Render system projects in admin dashboard
     function renderSystemProjects() {
       const systemList = document.getElementById('systemProjectsList');
       systemList.innerHTML = '';
@@ -1356,7 +1329,6 @@ async function uploadLargeImage(file) {
         `;
         systemList.appendChild(projectDiv);
       });
-      // Add event listeners to system buttons
       document.querySelectorAll('.system-edit-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           const id = parseInt(this.dataset.id);
@@ -1373,7 +1345,6 @@ async function uploadLargeImage(file) {
             }
             document.getElementById('addProjectBtn').textContent = 'Update Project';
             document.getElementById('addProjectBtn').dataset.editId = id;
-            // Scroll to project form
             document.querySelector('#adminDashboard .admin-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
           }
         });
@@ -1388,7 +1359,6 @@ async function uploadLargeImage(file) {
         });
       });
     }
-    // Render admin tables
     function renderAdminTables() {
       const sTbody = document.getElementById('skillsTable');
       sTbody.innerHTML = '';
@@ -1407,7 +1377,6 @@ async function uploadLargeImage(file) {
       });
       const pTbody = document.getElementById('projectsTable');
       pTbody.innerHTML = '';
-      // Show all projects in admin table (including system projects)
       appData.projects.forEach(p => {
         const hasImg = p.imageUrl && !p.imageUrl.includes('text=No+Image');
         const row = `
@@ -1422,7 +1391,6 @@ async function uploadLargeImage(file) {
           </tr>`;
         pTbody.innerHTML += row;
       });
-      // Add event listeners to edit and delete buttons
       document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.onclick = function(e) {
           const id = parseInt(this.dataset.id);
@@ -1435,7 +1403,6 @@ async function uploadLargeImage(file) {
               document.getElementById('skillDesc').value = s.desc;
               document.getElementById('addSkillBtn').textContent = 'Update Skill';
               document.getElementById('addSkillBtn').dataset.editId = id;
-              // Scroll to skill form
               document.querySelector('#adminDashboard .admin-section:nth-child(2)').scrollIntoView({ behavior: 'smooth' });
             }
           } else {
@@ -1452,7 +1419,6 @@ async function uploadLargeImage(file) {
               }
               document.getElementById('addProjectBtn').textContent = 'Update Project';
               document.getElementById('addProjectBtn').dataset.editId = id;
-              // Scroll to project form
               document.querySelector('#adminDashboard .admin-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
             }
           }
@@ -1473,7 +1439,7 @@ async function uploadLargeImage(file) {
         };
       });
     }
-    // Theme toggle functionality
+    // Theme toggle
     function toggleTheme() {
       const body = document.body;
       const icon = document.getElementById('themeToggle').querySelector('i');
@@ -1485,7 +1451,6 @@ async function uploadLargeImage(file) {
         icon.className = 'fas fa-sun';
       }
     }
-    // Load theme from localStorage if available
     function loadTheme() {
       try {
         const savedTheme = localStorage.getItem('theme');
@@ -1497,11 +1462,8 @@ async function uploadLargeImage(file) {
           document.body.classList.remove('light-mode');
           icon.className = 'fas fa-moon';
         }
-      } catch (e) {
-        // Ignore if localStorage not available
-      }
+      } catch (e) {}
     }
-    // Save theme to localStorage
     function saveTheme() {
       try {
         if (document.body.classList.contains('light-mode')) {
@@ -1509,26 +1471,19 @@ async function uploadLargeImage(file) {
         } else {
           localStorage.setItem('theme', 'dark');
         }
-      } catch (e) {
-        // Ignore if localStorage not available
-      }
+      } catch (e) {}
     }
-    // Initialize the application
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      // Load data from cloud
       loadFromCloud();
-      // Load theme
       loadTheme();
-      // Theme toggle event
       document.getElementById('themeToggle').addEventListener('click', () => {
         toggleTheme();
         saveTheme();
       });
-      // Profile picture upload
       document.getElementById('adminProfilePicInput').onchange = (e) => {
         if (e.target.files[0]) {
           const file = e.target.files[0];
-          // Check file size (allow up to 200MB for demo)
           if (file.size > 200 * 1024 * 1024) {
             alert('File too large! Maximum size is 200MB.');
             return;
@@ -1540,16 +1495,13 @@ async function uploadLargeImage(file) {
           reader.readAsDataURL(file);
         }
       };
-      // Save profile picture
       document.getElementById('saveProfileBtn').onclick = () => {
         const file = document.getElementById('adminProfilePicInput').files[0];
         if (!file) return alert('Please select an image first');
-        // Check file size (200MB max)
         if (file.size > 200 * 1024 * 1024) {
           alert('Image is too large (>200MB). Please use a smaller image.');
           return;
         }
-        // Simulate cloud upload
         simulateCloudUpload(file, () => {
           const reader = new FileReader();
           reader.onload = (e) => { 
@@ -1559,12 +1511,10 @@ async function uploadLargeImage(file) {
           reader.readAsDataURL(file);
         });
       };
-      // Project image preview
       document.getElementById('projImageInput').onchange = (e) => {
         const preview = document.getElementById('projImagePreview');
         if (e.target.files[0]) {
           const file = e.target.files[0];
-          // Check file size
           if (file.size > 200 * 1024 * 1024) {
             alert('File too large! Maximum size is 200MB.');
             return;
@@ -1579,7 +1529,6 @@ async function uploadLargeImage(file) {
           preview.style.display = 'none';
         }
       };
-      // Add/edit skill
       document.getElementById('addSkillBtn').onclick = () => {
         const name = document.getElementById('skillName').value.trim();
         const icon = document.getElementById('skillIcon').value.trim();
@@ -1602,7 +1551,6 @@ async function uploadLargeImage(file) {
         document.getElementById('skillDesc').value = '';
         saveToCloud();
       };
-      // Add/edit project
       document.getElementById('addProjectBtn').onclick = () => {
         const title = document.getElementById('projTitle').value.trim();
         const desc = document.getElementById('projDesc').value.trim();
@@ -1618,7 +1566,6 @@ async function uploadLargeImage(file) {
               document.getElementById('addProjectBtn').textContent = 'Add Project';
             }
           } else {
-            // New projects are not system projects
             const id = appData.projects.length ? Math.max(...appData.projects.map(x => x.id)) + 1 : 1;
             appData.projects.push({ id, title, desc, imageUrl, isSystem: false });
           }
@@ -1629,12 +1576,10 @@ async function uploadLargeImage(file) {
           saveToCloud();
         };
         if (file) {
-          // Check file size (200MB max)
           if (file.size > 200 * 1024 * 1024) {
             alert('Image is too large (>200MB). Please use a smaller image.');
             return;
           }
-          // Simulate cloud upload
           simulateCloudUpload(file, () => {
             const reader = new FileReader();
             reader.onload = (e) => finalize(e.target.result);
@@ -1647,11 +1592,9 @@ async function uploadLargeImage(file) {
           finalize('https://images.unsplash.com/photo-1518770527725-06e5d8179a36?w=600&h=400&fit=crop');
         }
       };
-      // Show admin login modal
       document.getElementById('adminBtn').onclick = () => {
         document.getElementById('loginModal').style.display = 'flex';
       };
-      // Admin login
       document.getElementById('loginSubmit').onclick = () => {
         if (document.getElementById('pwd').value === PASSWORD) {
           document.getElementById('loginModal').style.display = 'none';
@@ -1667,13 +1610,11 @@ async function uploadLargeImage(file) {
           }, 3000);
         }
       };
-      // Close modal when clicking outside
       document.getElementById('loginModal').onclick = (e) => {
         if (e.target === document.getElementById('loginModal')) {
           document.getElementById('loginModal').style.display = 'none';
         }
       };
-      // Initialize storage meter
       document.getElementById('storageUsed').style.width = '45%';
     });
   </script>
